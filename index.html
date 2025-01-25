@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Slime Invader</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <meta name="generator" content="Scirra Construct" />
+    <meta name="author" content="GugaFred" />
+    <link rel="manifest" href="appmanifest.json" />
+    <link rel="apple-touch-icon" sizes="129x129" href="icons/icon-128.png" />
+    <link rel="apple-touch-icon" sizes="257x257" href="icons/icon-256.png" />
+    <link rel="apple-touch-icon" sizes="513x513" href="icons/icon-512.png" />
+    <link rel="icon" type="image/png" href="icons/icon-512.png" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://interlinklabs.netlify.app/mdk.min.js"></script>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: url("images/bg.png") no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      #root {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .logo {
+        max-width: 300px;
+        margin-bottom: 30px;
+      }
+
+      .play-button {
+        width: 150px;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .play-button:hover {
+        transform: scale(1.1);
+      }
+
+      .play-button:active {
+        transform: scale(1.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="module">
+      const { useState } = React;
+      const { createRoot } = ReactDOM;
+
+      const App = () => {
+        const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+        const handleLoginSuccess = () => {
+          console.log("Login successful");
+          setIsLoggedIn(true);
+        };
+
+        const handleLoginFailure = () => {
+          console.error("Login failed");
+        };
+
+        const renderGameScripts = () => {
+          const scriptUrls = [
+            "scripts/supportcheck.js",
+            "scripts/offlineclient.js",
+            "scripts/main.js",
+            "scripts/register-sw.js",
+          ];
+
+          scriptUrls.forEach((url) => {
+            const script = document.createElement("script");
+            script.src = url;
+            script.type = url.endsWith(".js") ? "module" : "text/javascript";
+            document.body.appendChild(script);
+          });
+
+          if (location.protocol.substr(0, 4) === "file") {
+            alert(
+              "Web exports won't work until you upload them. (When running on the file: protocol, browsers block many features from working for security reasons.)"
+            );
+          }
+        };
+
+        const notLoggedInContent = React.createElement(
+          Mdk,
+          {
+            appid: "id__f0l03eeh65q1n137knm9",
+            onSuccess: handleLoginSuccess,
+            onFailure: handleLoginFailure,
+          },
+          ({ open }) =>
+            React.createElement(
+              React.Fragment,
+              null,
+              React.createElement("img", {
+                src: "images/logo.png",
+                alt: "Slime Invader Logo",
+                className: "logo",
+              }),
+              React.createElement("img", {
+                src: "images/sigin.png",
+                alt: "Play Button",
+                className: "play-button",
+                onClick: open,
+              })
+            )
+        );
+
+        const loggedInContent = React.createElement("div", null, [
+          (() => {
+            if (location.protocol.substr(0, 4) === "file") {
+              alert(
+                "Web exports won't work until you upload them. (When running on the file: protocol, browsers block many features from working for security reasons.)"
+              );
+            }
+          })(),
+          React.createElement("script", {
+            src: "scripts/supportcheck.js",
+            type: "text/javascript",
+            key: "supportcheck",
+          }),
+          React.createElement("script", {
+            src: "scripts/offlineclient.js",
+            type: "module",
+            key: "offlineclient",
+          }),
+          React.createElement("script", {
+            src: "scripts/main.js",
+            type: "module",
+            key: "main",
+          }),
+          React.createElement("script", {
+            src: "scripts/register-sw.js",
+            type: "module",
+            key: "register-sw",
+          }),
+        ]);
+
+        if (isLoggedIn) {
+          renderGameScripts();
+          return loggedInContent;
+        }
+
+        return notLoggedInContent;
+      };
+
+      const rootElement = document.getElementById("root");
+      const root = createRoot(rootElement);
+      root.render(React.createElement(App));
+    </script>
+  </body>
+</html>
