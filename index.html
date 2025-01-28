@@ -56,7 +56,7 @@
 <div id="root"></div>
 
 <script type="module">
-  const { useState } = React;
+  const { useState, useEffect } = React;
   const { createRoot } = ReactDOM;
 
   const App = () => {
@@ -92,7 +92,11 @@
         );
       }
     };
-
+    React.useEffect(() => {
+      document.body.style.background =
+              isLoggedIn ? "white" : 'url("images/bg.png") no-repeat center center fixed';
+      document.body.style.backgroundSize = isLoggedIn ? "none" : "cover";
+    }, [isLoggedIn]);
     const notLoggedInContent = React.createElement(
             Mdk,
             {
