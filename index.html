@@ -44,7 +44,8 @@
       }
 
       .play-button {
-        width: 150px;
+        margin-top: 70px;
+        width: 200px;
         height: auto;
         cursor: pointer;
         transition: transform 0.3s ease-in-out;
@@ -67,7 +68,7 @@
       const { createRoot } = ReactDOM;
 
       const App = () => {
-        const [isLoggedIn, setIsLoggedIn] = useState(false);
+        const [isLoggedIn, setIsLoggedIn] = useState(flase);
 
         const handleLoginSuccess = () => {
           console.log("Login successful");
@@ -111,11 +112,6 @@
             React.createElement(
               React.Fragment,
               null,
-              React.createElement("img", {
-                src: "images/logo.png",
-                alt: "Slime Invader Logo",
-                className: "logo",
-              }),
               React.createElement("img", {
                 src: "images/sigin.png",
                 alt: "Play Button",
